@@ -27,10 +27,10 @@ export class PostResolver {
 
     @Mutation(() => CreatePostPayload)
     public async createPost(
-        @Arg('input', () => CreatePostInput) input: CreatePostInput,
         @Ctx() context: ContextType,
+        @Arg('input', () => CreatePostInput) input: CreatePostInput,
     ): Promise<CreatePostPayload> {
-        return this.service.createOne(input, context.userId)
+        return this.service.createOne(input, context)
     }
 
     @Query(() => PostType)
@@ -38,7 +38,7 @@ export class PostResolver {
         @Ctx() context: ContextType,
         @Arg('args', () => PostArgs) args: PostArgs,
     ): Promise<PostType> {
-        return this.service.findOne(args, context.userId)
+        return this.service.findOne(args, context)
     }
 
     @Query(() => PostsType)
@@ -46,6 +46,6 @@ export class PostResolver {
         @Ctx() context: ContextType,
         @Arg('args', () => PostsArgs) args: PostsArgs,
     ): Promise<PostsType> {
-        return this.service.findAll(args, context.userId)
+        return this.service.findAll(args, context)
     }
 }

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
+import { v4 } from 'uuid'
 
 import { orm } from '../../shared/orm'
 
@@ -15,6 +16,7 @@ const posts: Prisma.PostCreateInput[] = [...new Array(130)].map(() => {
             dayjs().toDate()
         ),
         text: faker.lorem.sentences(),
+        userId: v4(),
     }
 })
 
@@ -24,6 +26,7 @@ const create = orm.post.createMany({
         {
             id: '8206bc5d-3556-4faa-9a65-e608612092b7',
             text: faker.lorem.sentences(),
+            userId: v4(),
         },
     ],
 })

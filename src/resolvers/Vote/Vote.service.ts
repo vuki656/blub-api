@@ -1,6 +1,7 @@
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
+import type { ContextType } from '../../shared/typescript-types'
 
 import type { CreateVoteInput } from './inputs/CreateVote.input'
 import type { CreateVotePayload } from './payloads'
@@ -8,13 +9,13 @@ import { VOTE_DEFAULT_SELECT } from './Vote.select'
 
 @singleton()
 export class VoteService {
-    public async create(input: CreateVoteInput): Promise<CreateVotePayload | null> {
+    public async create(input: CreateVoteInput, context: ContextType): Promise<CreateVotePayload | null> {
         const existingVote = await orm.vote.findFirst({
             where: {
                 post: {
                     id: input.postId,
                 },
-                userId: input.userId,
+                userId: context.userId,
             },
         })
 
@@ -30,7 +31,7 @@ export class VoteService {
                     },
                 },
                 type: input.type,
-                userId: input.userId,
+                userId: context.userId,
             },
             select: VOTE_DEFAULT_SELECT(),
         })

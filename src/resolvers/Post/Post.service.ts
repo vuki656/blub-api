@@ -1,6 +1,7 @@
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
+import type { ContextType } from '../../shared/typescript-types'
 
 import type {
     PostArgs,
@@ -16,11 +17,12 @@ import type {
 
 @singleton()
 export class PostService {
-    public async createOne(input: CreatePostInput, userId: string): Promise<CreatePostPayload> {
+    public async createOne(input: CreatePostInput, context: ContextType): Promise<CreatePostPayload> {
         const createdPost = await orm.post.create({
             data: {
                 email: input.email,
                 text: input.text,
+                userId: context.userId,
             },
             select: {
                 comments: true,
@@ -29,24 +31,15 @@ export class PostService {
             },
         })
 
-        const userVote = await orm.vote.findUnique({
-            where: {
-                userId_postFk: {
-                    postFk: createdPost.id,
-                    userId,
-                },
-            },
-        })
-
         return {
             post: {
                 ...createdPost,
-                userVote: userVote?.type ?? null,
+                userVote: null,
             },
         }
     }
 
-    public async findAll(args: PostsArgs, userId: string): Promise<PostsType> {
+    public async findAll(args: PostsArgs, context: ContextType): Promise<PostsType> {
         const posts = await orm.post.findMany({
             include: {
                 comments: true,
@@ -70,7 +63,7 @@ export class PostService {
 
         const list: PostType[] = posts.map((post) => {
             const userVote = post.votes.find((vote) => {
-                return vote.userId === userId
+                return vote.userId === context.userId
             })?.type ?? null
 
             return {
@@ -85,7 +78,7 @@ export class PostService {
         }
     }
 
-    public async findOne(args: PostArgs, userId: string): Promise<PostType> {
+    public async findOne(args: PostArgs, context: ContextType): Promise<PostType> {
         const post = await orm.post.findUniqueOrThrow({
             include: {
                 comments: {
@@ -104,7 +97,7 @@ export class PostService {
             where: {
                 userId_postFk: {
                     postFk: post.id,
-                    userId,
+                    userId: context.userId,
                 },
             },
         })

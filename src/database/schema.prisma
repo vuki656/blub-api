@@ -13,6 +13,7 @@ model Post {
     email     String?   @db.VarChar(100)
     isDeleted Boolean   @default(false) @map("is_deleted")
     createdAt DateTime  @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
+    userId    String    @map("user_id") @db.Uuid
     comments  Comment[]
     votes     Vote[]
 
@@ -37,6 +38,7 @@ model Comment {
     content   String   @db.VarChar(10000)
     createdAt DateTime @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
     postFk    String   @map("post_fk") @db.Uuid
+    userId    String   @map("user_id") @db.Uuid
     post      Post     @relation(fields: [postFk], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "FK_comments__posts")
 
     @@map("comments")
