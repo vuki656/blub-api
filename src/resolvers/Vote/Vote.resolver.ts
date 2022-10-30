@@ -1,9 +1,12 @@
 import { container } from 'tsyringe'
 import {
     Arg,
+    Ctx,
     Mutation,
     Resolver,
 } from 'type-graphql'
+
+import { ContextType } from '../../shared/typescript-types'
 
 import { CreateVoteInput } from './inputs'
 import { CreateVotePayload } from './payloads'
@@ -16,8 +19,9 @@ export class VoteResolver {
 
     @Mutation(() => CreateVotePayload, { nullable: true })
     public async createVote(
+        @Ctx() context: ContextType,
         @Arg('input', () => CreateVoteInput) input: CreateVoteInput,
     ): Promise<CreateVotePayload | null> {
-        return this.service.create(input)
+        return this.service.create(input, context)
     }
 }

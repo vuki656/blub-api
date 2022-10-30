@@ -1,0 +1,43 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1667136982-add-user-id-to-posts-and-comments.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1667136982",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Add user id to posts and comments",
+                "changes": [
+                    {
+                        "addColumn": {
+                            "tableName": "comments",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "user_id",
+                                        "type": "uuid"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "addColumn": {
+                            "tableName": "posts",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "user_id",
+                                        "type": "uuid"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker'
 import { container } from 'tsyringe'
+import { v4 } from 'uuid'
 
 import { orm } from '../../../../shared/orm'
 import {
@@ -36,7 +36,7 @@ describe('Vote resolver', () => {
 
     describe('when createVote mutation is called', () => {
         it('should create a vote', async () => {
-            const USER_ID = faker.datatype.uuid()
+            const USER_ID = v4()
 
             const existingPost = await postFactory.createOne()
 
@@ -49,9 +49,10 @@ describe('Vote resolver', () => {
                     input: {
                         postId: existingPost.id,
                         type: VoteTypeEnum.Positive,
-                        userId: USER_ID,
                     },
                 },
+            }, {
+                userId: USER_ID,
             })
 
             const post = await orm.post.findFirst({
@@ -82,7 +83,7 @@ describe('Vote resolver', () => {
         })
 
         it('should return null if user already voted on a post', async () => {
-            const USER_ID = faker.datatype.uuid()
+            const USER_ID = v4()
 
             const existingVote = await voteFactory.createOne({
                 value: {
@@ -109,9 +110,10 @@ describe('Vote resolver', () => {
                     input: {
                         postId: post.id,
                         type: VoteTypeEnum.Positive,
-                        userId: USER_ID,
                     },
                 },
+            }, {
+                userId: USER_ID,
             })
 
             expect(findResponse.errors).toBeUndefined()

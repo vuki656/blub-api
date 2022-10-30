@@ -1,9 +1,9 @@
-import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
 import {
     container,
     injectable,
 } from 'tsyringe'
+import { v4 } from 'uuid'
 
 import { VOTE_DEFAULT_SELECT } from '../../../resolvers'
 import { orm } from '../../../shared/orm'
@@ -55,7 +55,7 @@ export class VoteFactory implements Factory {
         const post: Prisma.PostCreateOrConnectWithoutVotesInput = {
             create: this.postFactory.generateData(),
             where: {
-                id: existing?.postId ?? faker.datatype.uuid(),
+                id: existing?.postId ?? v4(),
             },
         }
 
@@ -64,7 +64,7 @@ export class VoteFactory implements Factory {
                 connectOrCreate: post,
             },
             type: value?.type ?? VoteTypeEnum.Positive,
-            userId: value?.userId ?? faker.datatype.uuid(),
+            userId: value?.userId ?? v4(),
         }
     }
 }

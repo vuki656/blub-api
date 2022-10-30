@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
 import { injectable } from 'tsyringe'
+import { v4 } from 'uuid'
 
 import { POST_DEFAULT_SELECT } from '../../../resolvers'
 import { orm } from '../../../shared/orm'
@@ -9,6 +10,7 @@ import type { Factory } from '../types'
 type ParamsType = {
     value?: {
         text?: string
+        userId?: string
     }
 }
 
@@ -41,6 +43,7 @@ export class PostFactory implements Factory {
 
         return {
             text: value?.text ?? faker.lorem.paragraphs(),
+            userId: value?.userId ?? v4(),
         }
     }
 }

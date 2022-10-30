@@ -18,7 +18,7 @@
         "test:setup": "yarn schema:build && yarn test:codegen",
         "test:run": "yarn test:integration",
         "test:integration": "jest --config='./src/tests/integration/jest.config.js' --runInBand",
-        "test:single": "jest './src/tests/integration/__tests__/resolvers/Post.test.ts' --config='./src/tests/integration/jest.config.js'",
+        "test:single": "jest './src/tests/integration/__tests__/resolvers/Comment.test.ts' --config='./src/tests/integration/jest.config.js'",
         "lint": "yarn lint:config & yarn lint:spell & yarn lint:source",
         "lint:ci": "yarn orm:generate && yarn lint",
         "lint:source": "eslint './src/**/*.{ts,js}' --quiet --cache --fix --cache-strategy='content' --cache-location='.eslintcache/'",

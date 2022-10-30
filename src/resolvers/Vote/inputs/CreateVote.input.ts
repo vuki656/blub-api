@@ -13,7 +13,4 @@ export class CreateVoteInput {
 
     @Field(() => VoteTypeEnum)
     public type: VoteTypeEnum
-
-    @Field(() => String)
-    public userId: string
 }

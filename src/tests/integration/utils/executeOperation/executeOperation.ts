@@ -1,4 +1,4 @@
-import { v4 as UUID } from 'uuid'
+import { v4 } from 'uuid'
 
 import { server } from '../../../../server'
 
@@ -22,7 +22,7 @@ export const executeOperation = async <TData, TVariables>(
                 ...params?.integrationContextArgument?.req,
                 headers: {
                     ...params?.integrationContextArgument?.req?.headers,
-                    authorization: params?.userId ?? UUID(),
+                    authorization: params?.userId ?? v4(),
                 },
             },
         }

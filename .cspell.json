@@ -26,6 +26,7 @@
         "dmmf",
         "nodemon",
         "yarnrc",
-        "eslintcache"
+        "eslintcache",
+        "jdbc"
     ]
 }

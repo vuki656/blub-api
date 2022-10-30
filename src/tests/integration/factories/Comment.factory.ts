@@ -4,6 +4,7 @@ import {
     container,
     injectable,
 } from 'tsyringe'
+import { v4 } from 'uuid'
 
 import { COMMENT_DEFAULT_SELECT } from '../../../resolvers'
 import { orm } from '../../../shared/orm'
@@ -17,6 +18,7 @@ type ParamsType = {
     }
     value?: {
         content?: string
+        userId?: string
     }
 }
 
@@ -52,7 +54,7 @@ export class CommentFactory implements Factory {
         const post: Prisma.PostCreateOrConnectWithoutVotesInput = {
             create: this.postFactory.generateData(),
             where: {
-                id: existing?.postId ?? faker.datatype.uuid(),
+                id: existing?.postId ?? v4(),
             },
         }
 
@@ -61,6 +63,7 @@ export class CommentFactory implements Factory {
             post: {
                 connectOrCreate: post,
             },
+            userId: value?.userId ?? v4(),
         }
     }
 }

@@ -1,9 +1,12 @@
 import { container } from 'tsyringe'
 import {
     Arg,
+    Ctx,
     Mutation,
     Resolver,
 } from 'type-graphql'
+
+import { ContextType } from '../../shared/typescript-types'
 
 import { CommentService } from './Comment.service'
 import { CreateCommentInput } from './inputs'
@@ -16,8 +19,9 @@ export class CommentResolver {
 
     @Mutation(() => CreateCommentPayload)
     public async createComment(
+        @Ctx() context: ContextType,
         @Arg('input', () => CreateCommentInput) input: CreateCommentInput,
     ): Promise<CreateCommentPayload> {
-        return this.service.createOne(input)
+        return this.service.createOne(input, context)
     }
 }
