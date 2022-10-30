@@ -1,0 +1,110 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1656241661-create-votes-table.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1656241661",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Create votes table",
+                "changes": [
+                    {
+                        "sql": {
+                            "splitStatements": true,
+                            "comment": "Create enum type for the vote",
+                            "sql": "CREATE TYPE vote_type AS ENUM ('POSITIVE', 'NEGATIVE');"
+                        }
+                    },
+                    {
+                        "createTable": {
+                            "schemaName": "blub",
+                            "tableName": "votes",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "id",
+                                        "type": "uuid",
+                                        "defaultValueComputed": "public.uuid_generate_v4()",
+                                        "constraints": {
+                                            "nullable": false,
+                                            "primaryKey": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "user_id",
+                                        "type": "uuid",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "post_fk",
+                                        "type": "uuid",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "type",
+                                        "type": "vote_type",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "is_deleted",
+                                        "type": "boolean",
+                                        "defaultValueBoolean": false,
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "created_at",
+                                        "type": "datetime",
+                                        "defaultValueComputed": "timezone('utc', NOW())",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "addForeignKeyConstraint": {
+                            "baseColumnNames": "post_fk",
+                            "baseTableName": "votes",
+                            "constraintName": "FK_votes__posts",
+                            "deferrable": true,
+                            "initiallyDeferred": true,
+                            "onDelete": "CASCADE",
+                            "onUpdate": "RESTRICT",
+                            "referencedColumnNames": "id",
+                            "referencedTableName": "posts"
+                        }
+                    },
+                    {
+                        "addUniqueConstraint": {
+                            "schemaName": "blub",
+                            "tableName": "votes",
+                            "columnNames": "user_id,post_fk"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

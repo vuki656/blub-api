@@ -1,0 +1,27 @@
+{
+    "extends": ["@rimac-technology/eslint-config/core", "@rimac-technology/eslint-config/type-graphql"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "ignorePatterns": [
+        "**/*.json",
+        "**/*.yaml",
+        "**/*.yml",
+        "**/*.prisma",
+        "**/*.graphql",
+        "**/*.generated.ts",
+        "**/generated.ts"
+    ],
+    "rules": {
+        "no-magic-numbers": "off",
+        "max-len": "off",
+        "sonarjs/prefer-single-boolean-return": "off",
+        "@rimac-technology/document-todos": [
+            "error",
+            {
+                "url": "https://github.com/vuki656/blub/issues"
+            }
+        ]
+    }
+}

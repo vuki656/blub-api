@@ -1,0 +1,31 @@
+{
+    "useGitignore": true,
+    "cache": {
+        "useCache": true,
+        "cacheStrategy": "content",
+        "cacheLocation": "./.cspellcache"
+    },
+    "ignoreWords": [
+        "tsyringe",
+        "asynciterable",
+        "pino",
+        "asynciterable",
+        "blub",
+        "liquibase",
+        "codegen",
+        "healthcheck",
+        "rimac",
+        "loglevel",
+        "envalid",
+        "varchar",
+        "dbgenerated",
+        "typegraphql",
+        "datetime",
+        "ossp",
+        "datasource",
+        "dmmf",
+        "nodemon",
+        "yarnrc",
+        "eslintcache"
+    ]
+}

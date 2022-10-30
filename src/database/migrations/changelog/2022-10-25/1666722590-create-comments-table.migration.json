@@ -1,0 +1,76 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1666722590-add-create-comments-table.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1666722590",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Add create comments table",
+                "changes": [
+                    {
+                        "createTable": {
+                            "tableName": "comments",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "id",
+                                        "type": "uuid",
+                                        "defaultValueComputed": "public.uuid_generate_v4()",
+                                        "constraints": {
+                                            "nullable": false,
+                                            "primaryKey": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "content",
+                                        "type": "VARCHAR(10000)",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "created_at",
+                                        "type": "datetime",
+                                        "defaultValueComputed": "timezone('utc', NOW())",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "post_fk",
+                                        "type": "uuid",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "addForeignKeyConstraint": {
+                            "baseColumnNames": "post_fk",
+                            "baseTableName": "comments",
+                            "constraintName": "FK_comments__posts",
+                            "deferrable": true,
+                            "initiallyDeferred": true,
+                            "onDelete": "CASCADE",
+                            "onUpdate": "RESTRICT",
+                            "referencedColumnNames": "id",
+                            "referencedTableName": "posts"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

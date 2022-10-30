@@ -1,0 +1,74 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1656197936-create-posts-table.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1656197936",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Create posts table",
+                "changes": [
+                    {
+                        "createTable": {
+                            "tableName": "posts",
+                            "schemaName": "blub",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "id",
+                                        "type": "uuid",
+                                        "defaultValueComputed": "public.uuid_generate_v4()",
+                                        "constraints": {
+                                            "nullable": false,
+                                            "primaryKey": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "text",
+                                        "type": "varchar(15000)",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "email",
+                                        "type": "varchar(100)",
+                                        "constraints": {
+                                            "nullable": true
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "is_deleted",
+                                        "type": "boolean",
+                                        "defaultValueBoolean": false,
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "created_at",
+                                        "type": "datetime",
+                                        "defaultValueComputed": "timezone('utc', NOW())",
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

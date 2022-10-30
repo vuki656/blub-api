@@ -1,0 +1,31 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1656196949-database-setup.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1656196949",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Database setup",
+                "changes": [
+                    {
+                        "changes": [
+                            {
+                                "sql": {
+                                    "sql": "CREATE SCHEMA blub"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "sql": {
+                            "sql": "CREATE EXTENSION \"uuid-ossp\" SCHEMA public"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

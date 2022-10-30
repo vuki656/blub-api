@@ -1,0 +1,12 @@
+{
+    "databaseChangeLog": [
+        {
+            "includeAll": {
+                "logicalFilePath": "database/migrations/master.yaml",
+                "path": "changelog/",
+                "errorIfMissingOrEmpty": true,
+                "relativeToChangelogFile": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "__timestamp__-__description__KebabCase__.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "__timestamp__",
+                "author": "off.vukovic@gmail.com",
+                "comment": "__description__SentenceCase__",
+                "changes": [
+                    // TODO: fill
+                ]
+            }
+        }
+    ]
+}

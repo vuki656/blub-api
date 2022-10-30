@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "allowJs": true,
+        "module": "commonjs",
+        "alwaysStrict": true,
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "sourceMap": true,
+        "strictPropertyInitialization": false,
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "inlineSources": true,
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "strictNullChecks": true,
+        "lib": ["dom", "ESNext", "esnext.asynciterable"]
+    },
+    "exclude": ["node_modules"]
+}

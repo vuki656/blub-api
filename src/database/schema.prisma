@@ -1,0 +1,50 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DB_PRISMA_URL")
+}
+
+model Post {
+    id        String    @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+    text      String    @db.VarChar(15000)
+    email     String?   @db.VarChar(100)
+    isDeleted Boolean   @default(false) @map("is_deleted")
+    createdAt DateTime  @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
+    comments  Comment[]
+    votes     Vote[]
+
+    @@map("posts")
+}
+
+model Vote {
+    id        String   @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+    userId    String   @map("user_id") @db.Uuid
+    postFk    String   @map("post_fk") @db.Uuid
+    type      VoteType
+    isDeleted Boolean  @default(false) @map("is_deleted")
+    createdAt DateTime @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
+    post      Post     @relation(fields: [postFk], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "FK_votes__posts")
+
+    @@unique([userId, postFk])
+    @@map("votes")
+}
+
+model Comment {
+    id        String   @id @default(dbgenerated("public.uuid_generate_v4()")) @db.Uuid
+    content   String   @db.VarChar(10000)
+    createdAt DateTime @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
+    postFk    String   @map("post_fk") @db.Uuid
+    post      Post     @relation(fields: [postFk], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "FK_comments__posts")
+
+    @@map("comments")
+}
+
+enum VoteType {
+    POSITIVE
+    NEGATIVE
+
+    @@map("vote_type")
+}
