@@ -30,7 +30,7 @@
                                 {
                                     "column": {
                                         "name": "user_id",
-                                        "type": "uuid"
+                                        "type": "uuid",
                                     }
                                 }
                             ]

@@ -1,0 +1,29 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1667140276-add-back-user-id-not-null-constraints.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1667140276",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Add back user id not null constraints",
+                "changes": [
+                    {
+                        "addNotNullConstraint": {
+                            "tableName": "comments",
+                            "columnName": "user_id"
+                        }
+                    },
+                    {
+                        "addNotNullConstraint": {
+                            "tableName": "posts",
+                            "columnName": "user_id"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
