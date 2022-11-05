@@ -1,8 +1,12 @@
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
 import { container } from 'tsyringe'
+import { v4 } from 'uuid'
 
-import { PostFactory } from '../../factories'
+import {
+    PostFactory,
+    VoteFactory,
+} from '../../factories'
 import { CREATE_POST } from '../../graphql/mutations'
 import { POSTS } from '../../graphql/queries/Post.gql'
 import type {
@@ -19,16 +23,14 @@ import {
 
 describe('Post resolver', () => {
     let postFactory: PostFactory
+    let voteFactory: VoteFactory
 
     beforeAll(() => {
         postFactory = container.resolve(PostFactory)
+        voteFactory = container.resolve(VoteFactory)
     })
 
     beforeEach(async () => {
-        await wipeDatabase()
-    })
-
-    afterAll(async () => {
         await wipeDatabase()
     })
 
@@ -76,14 +78,13 @@ describe('Post resolver', () => {
         })
 
         it('should return posts sorted date', async () => {
-            const LATEST_POST_ID = 'af07c939-0921-4610-a6a2-37b9296db2c5'
+            const LATEST_POST_ID = v4()
 
             await postFactory.createAmount(60)
 
             await postFactory.createOne({
                 value: {
                     id: LATEST_POST_ID,
-                    text: 'Hello',
                 },
             })
 
@@ -104,11 +105,46 @@ describe('Post resolver', () => {
             expect(response.data?.posts.list[0]?.id).toBe(LATEST_POST_ID)
         })
 
+        it('should return posts sorted by vote amount', async () => {
+            const LATEST_POST_ID = v4()
+
+            await postFactory.createAmount(60)
+
+            await postFactory.createOne({
+                value: {
+                    id: LATEST_POST_ID,
+                },
+            })
+
+            await voteFactory.createAmount(30, {
+                existing: {
+                    postId: LATEST_POST_ID,
+                },
+            })
+
+            const [response] = await executeOperation<
+                PostsQuery,
+                PostsQueryVariables
+            >({
+                query: POSTS,
+                variables: {
+                    args: {
+                        skip: 0,
+                        sort: PostsSortEnum.Popular,
+                    },
+                },
+            })
+
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.posts.list[0]?.id).toBe(LATEST_POST_ID)
+        })
+
         it('should return posts in between given days', async () => {
             // Post out of range
             await postFactory.createOne({
                 value: {
-                    createdAt: dayjs().subtract(80, 'days')
+                    createdAt: dayjs()
+                        .subtract(80, 'days')
                         .toDate(),
                 },
             })
@@ -116,7 +152,8 @@ describe('Post resolver', () => {
             // Post in range
             await postFactory.createOne({
                 value: {
-                    createdAt: dayjs().subtract(20, 'days')
+                    createdAt: dayjs()
+                        .subtract(20, 'days')
                         .toDate(),
                 },
             })

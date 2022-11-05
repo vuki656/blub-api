@@ -46,7 +46,7 @@ export class PostFactory implements Factory {
         return {
             createdAt: value?.createdAt ?? new Date(),
             id: value?.id ?? v4(),
-            text: value?.text ?? faker.lorem.paragraphs(),
+            text: value?.text ?? faker.lorem.sentence(),
             userId: value?.userId ?? v4(),
         }
     }

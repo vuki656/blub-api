@@ -47,8 +47,12 @@ export class PostService {
                 comments: true,
                 votes: true,
             },
-            orderBy: {
-                createdAt: args.sort === PostsSortEnum.NEW ? 'desc' : undefined,
+            orderBy: args.sort === PostsSortEnum.NEW ? {
+                createdAt: 'desc',
+            } : {
+                votes: {
+                    _count: 'desc',
+                },
             },
             skip: args.skip,
             take: 50,
@@ -59,7 +63,8 @@ export class PostService {
                     },
                     {
                         createdAt: args.days ? {
-                            gte: dayjs().subtract(args.days, 'days')
+                            gte: dayjs()
+                                .subtract(args.days, 'days')
                                 .toDate(),
                             lte: dayjs().toDate(),
                         } : undefined,
