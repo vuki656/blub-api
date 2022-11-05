@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+import dayjs from 'dayjs'
 import { container } from 'tsyringe'
 
 import { PostFactory } from '../../factories'
@@ -101,6 +102,41 @@ describe('Post resolver', () => {
 
             expect(response.errors).toBeUndefined()
             expect(response.data?.posts.list[0]?.id).toBe(LATEST_POST_ID)
+        })
+
+        it('should return posts in between given days', async () => {
+            // Post out of range
+            await postFactory.createOne({
+                value: {
+                    createdAt: dayjs().subtract(80, 'days')
+                        .toDate(),
+                },
+            })
+
+            // Post in range
+            await postFactory.createOne({
+                value: {
+                    createdAt: dayjs().subtract(20, 'days')
+                        .toDate(),
+                },
+            })
+
+            const [response] = await executeOperation<
+                PostsQuery,
+                PostsQueryVariables
+            >({
+                query: POSTS,
+                variables: {
+                    args: {
+                        days: 30,
+                        skip: 0,
+                        sort: PostsSortEnum.New,
+                    },
+                },
+            })
+
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.posts.list).toHaveLength(1)
         })
     })
 

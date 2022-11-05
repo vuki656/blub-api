@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
@@ -52,7 +53,18 @@ export class PostService {
             skip: args.skip,
             take: 50,
             where: {
-                isDeleted: false,
+                AND: [
+                    {
+                        isDeleted: false,
+                    },
+                    {
+                        createdAt: args.days ? {
+                            gte: dayjs().subtract(args.days, 'days')
+                                .toDate(),
+                            lte: dayjs().toDate(),
+                        } : undefined,
+                    },
+                ],
             },
         })
 
