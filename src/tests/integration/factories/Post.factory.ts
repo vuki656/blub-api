@@ -9,6 +9,7 @@ import type { Factory } from '../types'
 
 type ParamsType = {
     value?: {
+        id?: string
         text?: string
         userId?: string
     }
@@ -42,6 +43,7 @@ export class PostFactory implements Factory {
         const { value } = params ?? {}
 
         return {
+            id: value?.id ?? v4(),
             text: value?.text ?? faker.lorem.paragraphs(),
             userId: value?.userId ?? v4(),
         }

@@ -7,6 +7,7 @@ import type {
     PostArgs,
     PostsArgs,
 } from './args'
+import { PostsSortEnum } from './enums'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
 import { POST_DEFAULT_SELECT } from './Post.select'
@@ -46,7 +47,7 @@ export class PostService {
                 votes: true,
             },
             orderBy: {
-                createdAt: 'desc',
+                createdAt: args.sort === PostsSortEnum.NEW ? 'desc' : undefined,
             },
             skip: args.skip,
             take: 50,

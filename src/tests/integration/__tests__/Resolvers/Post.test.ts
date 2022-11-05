@@ -10,6 +10,7 @@ import type {
     PostsQuery,
     PostsQueryVariables,
 } from '../../types/generated'
+import { PostsSortEnum } from '../../types/generated'
 import {
     executeOperation,
     wipeDatabase,
@@ -34,7 +35,7 @@ describe('Post resolver', () => {
         it('should return paginated posts', async () => {
             const existingPosts = await postFactory.createAmount(60)
 
-            const [findResponse] = await executeOperation<
+            const [response] = await executeOperation<
                 PostsQuery,
                 PostsQueryVariables
             >({
@@ -42,19 +43,20 @@ describe('Post resolver', () => {
                 variables: {
                     args: {
                         skip: 0,
+                        sort: PostsSortEnum.New,
                     },
                 },
             })
 
-            expect(findResponse.errors).toBeUndefined()
-            expect(findResponse.data?.posts.list).toHaveLength(50)
-            expect(findResponse.data?.posts.total).toBe(existingPosts.length)
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.posts.list).toHaveLength(50)
+            expect(response.data?.posts.total).toBe(existingPosts.length)
         })
 
-        it('should return properly paginated posts', async () => {
+        it('should return properly paginated posts second page', async () => {
             const existingPosts = await postFactory.createAmount(60)
 
-            const [findResponse] = await executeOperation<
+            const [response] = await executeOperation<
                 PostsQuery,
                 PostsQueryVariables
             >({
@@ -62,13 +64,43 @@ describe('Post resolver', () => {
                 variables: {
                     args: {
                         skip: 50,
+                        sort: PostsSortEnum.New,
                     },
                 },
             })
 
-            expect(findResponse.errors).toBeUndefined()
-            expect(findResponse.data?.posts.list).toHaveLength(10)
-            expect(findResponse.data?.posts.total).toBe(existingPosts.length)
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.posts.list).toHaveLength(10)
+            expect(response.data?.posts.total).toBe(existingPosts.length)
+        })
+
+        it('should return posts sorted date', async () => {
+            const LATEST_POST_ID = 'af07c939-0921-4610-a6a2-37b9296db2c5'
+
+            await postFactory.createAmount(60)
+
+            await postFactory.createOne({
+                value: {
+                    id: LATEST_POST_ID,
+                    text: 'Hello',
+                },
+            })
+
+            const [response] = await executeOperation<
+                PostsQuery,
+                PostsQueryVariables
+            >({
+                query: POSTS,
+                variables: {
+                    args: {
+                        skip: 0,
+                        sort: PostsSortEnum.New,
+                    },
+                },
+            })
+
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.posts.list[0]?.id).toBe(LATEST_POST_ID)
         })
     })
 
@@ -76,7 +108,7 @@ describe('Post resolver', () => {
         it('should create a post', async () => {
             const TEXT = faker.lorem.paragraphs()
 
-            const [findResponse] = await executeOperation<
+            const [response] = await executeOperation<
                 CreatePostMutation,
                 CreatePostMutationVariables
             >({
@@ -89,8 +121,8 @@ describe('Post resolver', () => {
                 },
             })
 
-            expect(findResponse.errors).toBeUndefined()
-            expect(findResponse.data?.createPost.post).toMatchObject({
+            expect(response.errors).toBeUndefined()
+            expect(response.data?.createPost.post).toMatchObject({
                 text: TEXT,
             })
         })
