@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { singleton } from 'tsyringe'
 
 import { orm } from '../../shared/orm'
@@ -7,6 +8,7 @@ import type {
     PostArgs,
     PostsArgs,
 } from './args'
+import { PostsSortEnum } from './enums'
 import type { CreatePostInput } from './inputs'
 import type { CreatePostPayload } from './payloads'
 import { POST_DEFAULT_SELECT } from './Post.select'
@@ -45,13 +47,29 @@ export class PostService {
                 comments: true,
                 votes: true,
             },
-            orderBy: {
+            orderBy: args.sort === PostsSortEnum.NEW ? {
                 createdAt: 'desc',
+            } : {
+                votes: {
+                    _count: 'desc',
+                },
             },
             skip: args.skip,
             take: 50,
             where: {
-                isDeleted: false,
+                AND: [
+                    {
+                        isDeleted: false,
+                    },
+                    {
+                        createdAt: args.days ? {
+                            gte: dayjs()
+                                .subtract(args.days, 'days')
+                                .toDate(),
+                            lte: dayjs().toDate(),
+                        } : undefined,
+                    },
+                ],
             },
         })
 

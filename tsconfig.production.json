@@ -1,4 +1,11 @@
 {
     "extends": "./tsconfig.json",
-    "exclude": ["node_modules", "generator", "./src/tests", "*generated.ts"]
+    "exclude": [
+        "node_modules",
+        "generator",
+        "./src/tests",
+        "*generated.ts",
+        "./src/database/migrations",
+        "./src/database/seed"
+    ]
 }
