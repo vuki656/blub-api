@@ -5,13 +5,16 @@ import { v4 } from 'uuid'
 
 import { orm } from '../../shared/orm'
 
+const POST_AMOUNT = 130
+const PAST_POST_DATE_THRESHOLD = 90
+
 const remove = orm.post.deleteMany()
 
-const posts: Prisma.PostCreateInput[] = [...new Array(130)].map(() => {
+const posts: Prisma.PostCreateInput[] = [...new Array(POST_AMOUNT)].map(() => {
     return {
         createdAt: faker.date.between(
             dayjs()
-                .subtract(90, 'days')
+                .subtract(PAST_POST_DATE_THRESHOLD, 'days')
                 .toDate(),
             dayjs().toDate()
         ),

@@ -17,6 +17,8 @@ import type {
     PostType,
 } from './types'
 
+export const DEFAULT_POST_PAGINATION_AMOUNT = 20
+
 @singleton()
 export class PostService {
     public async createOne(input: CreatePostInput, context: ContextType): Promise<CreatePostPayload> {
@@ -55,7 +57,7 @@ export class PostService {
                 },
             },
             skip: args.skip,
-            take: 50,
+            take: DEFAULT_POST_PAGINATION_AMOUNT,
             where: {
                 AND: [
                     {
