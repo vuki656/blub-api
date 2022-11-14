@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { container } from 'tsyringe'
 import { v4 } from 'uuid'
 
+import { DEFAULT_POST_PAGINATION_AMOUNT } from '../../../../resolvers'
 import {
     PostFactory,
     VoteFactory,
@@ -36,7 +37,9 @@ describe('Post resolver', () => {
 
     describe('when posts query is called', () => {
         it('should return paginated posts', async () => {
-            const existingPosts = await postFactory.createAmount(60)
+            const POST_AMOUNT = 60
+
+            const existingPosts = await postFactory.createAmount(POST_AMOUNT)
 
             const [response] = await executeOperation<
                 PostsQuery,
@@ -52,12 +55,15 @@ describe('Post resolver', () => {
             })
 
             expect(response.errors).toBeUndefined()
-            expect(response.data?.posts.list).toHaveLength(20)
+            expect(response.data?.posts.list).toHaveLength(DEFAULT_POST_PAGINATION_AMOUNT)
             expect(response.data?.posts.total).toBe(existingPosts.length)
         })
 
         it('should return properly paginated posts second page', async () => {
-            const existingPosts = await postFactory.createAmount(30)
+            const POST_AMOUNT = 30
+            const SECOND_PAGE_POST_COUNT = 10
+
+            const existingPosts = await postFactory.createAmount(POST_AMOUNT)
 
             const [response] = await executeOperation<
                 PostsQuery,
@@ -66,21 +72,22 @@ describe('Post resolver', () => {
                 query: POSTS,
                 variables: {
                     args: {
-                        skip: 20,
+                        skip: DEFAULT_POST_PAGINATION_AMOUNT,
                         sort: PostsSortEnum.New,
                     },
                 },
             })
 
             expect(response.errors).toBeUndefined()
-            expect(response.data?.posts.list).toHaveLength(10)
+            expect(response.data?.posts.list).toHaveLength(SECOND_PAGE_POST_COUNT)
             expect(response.data?.posts.total).toBe(existingPosts.length)
         })
 
         it('should return posts sorted date', async () => {
+            const POST_COUNT = 60
             const LATEST_POST_ID = v4()
 
-            await postFactory.createAmount(60)
+            await postFactory.createAmount(POST_COUNT)
 
             await postFactory.createOne({
                 value: {
@@ -106,9 +113,11 @@ describe('Post resolver', () => {
         })
 
         it('should return posts sorted by vote amount', async () => {
+            const POST_COUNT = 60
+            const VOTE_COUNT = 30
             const LATEST_POST_ID = v4()
 
-            await postFactory.createAmount(60)
+            await postFactory.createAmount(POST_COUNT)
 
             await postFactory.createOne({
                 value: {
@@ -116,7 +125,7 @@ describe('Post resolver', () => {
                 },
             })
 
-            await voteFactory.createAmount(30, {
+            await voteFactory.createAmount(VOTE_COUNT, {
                 existing: {
                     postId: LATEST_POST_ID,
                 },
@@ -140,11 +149,14 @@ describe('Post resolver', () => {
         })
 
         it('should return posts in between given days', async () => {
+            const OUT_OF_RANGE_POST_DAYS = 80
+            const IN_RANGE_POST_DAYS = 20
+
             // Post out of range
             await postFactory.createOne({
                 value: {
                     createdAt: dayjs()
-                        .subtract(80, 'days')
+                        .subtract(OUT_OF_RANGE_POST_DAYS, 'days')
                         .toDate(),
                 },
             })
@@ -153,7 +165,7 @@ describe('Post resolver', () => {
             await postFactory.createOne({
                 value: {
                     createdAt: dayjs()
-                        .subtract(20, 'days')
+                        .subtract(IN_RANGE_POST_DAYS, 'days')
                         .toDate(),
                 },
             })
