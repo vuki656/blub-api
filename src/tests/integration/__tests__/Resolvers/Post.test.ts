@@ -52,12 +52,12 @@ describe('Post resolver', () => {
             })
 
             expect(response.errors).toBeUndefined()
-            expect(response.data?.posts.list).toHaveLength(50)
+            expect(response.data?.posts.list).toHaveLength(20)
             expect(response.data?.posts.total).toBe(existingPosts.length)
         })
 
         it('should return properly paginated posts second page', async () => {
-            const existingPosts = await postFactory.createAmount(60)
+            const existingPosts = await postFactory.createAmount(30)
 
             const [response] = await executeOperation<
                 PostsQuery,
@@ -66,7 +66,7 @@ describe('Post resolver', () => {
                 query: POSTS,
                 variables: {
                     args: {
-                        skip: 50,
+                        skip: 20,
                         sort: PostsSortEnum.New,
                     },
                 },

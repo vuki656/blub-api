@@ -55,7 +55,7 @@ export class PostService {
                 },
             },
             skip: args.skip,
-            take: 50,
+            take: 20,
             where: {
                 AND: [
                     {
