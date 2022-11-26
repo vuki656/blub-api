@@ -27,6 +27,8 @@
         "nodemon",
         "yarnrc",
         "eslintcache",
-        "jdbc"
+        "jdbc",
+        "openai",
+        "davinci"
     ]
 }

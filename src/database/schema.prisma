@@ -14,6 +14,7 @@ model Post {
     isDeleted Boolean   @default(false) @map("is_deleted")
     createdAt DateTime  @default(dbgenerated("timezone('utc'::text, now())")) @map("created_at") @db.Timestamp(6)
     userId    String    @map("user_id") @db.Uuid
+    isFake    Boolean   @default(false) @map("is_fake")
     comments  Comment[]
     votes     Vote[]
 
