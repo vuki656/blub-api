@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import { ApolloServer } from 'apollo-server'
 
+import { startCrons } from '../crons'
 import { LoggerCategoriesEnum } from '../shared/enums'
 import { env } from '../shared/env'
 import { orm } from '../shared/orm'
@@ -28,6 +29,8 @@ export const server = new ApolloServer({
 export const startServer = async () => {
     await server.listen({ port: env.APP_PORT })
         .then((serverInfo) => {
+            startCrons()
+
             logger.info({
                 category: LoggerCategoriesEnum.SERVER,
                 message: `🚀 Server ready at ${serverInfo.url}`,
