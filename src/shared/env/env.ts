@@ -22,6 +22,9 @@ export const env = cleanEnv(process.env, {
     DB_PASSWORD: str(),
     DB_PRISMA_URL: str(),
     DB_USERNAME: str(),
+    OPEN_AI_CONTENT_CRON: str(),
+    OPEN_AI_ORGANIZATION: str(),
+    OPEN_AI_SECRET: str(),
 }, {
     reporter: ({ errors }) => {
         for (const [environmentVariable, error] of Object.entries(errors)) {

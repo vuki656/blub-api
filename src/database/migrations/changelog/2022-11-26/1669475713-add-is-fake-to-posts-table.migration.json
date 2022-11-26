@@ -1,0 +1,34 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1669475713-add-is-fake-to-posts-table.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1669475713",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Add is fake to posts table",
+                "changes": [
+                    {
+                        "addColumn": {
+                            "tableName": "posts",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "is_fake",
+                                        "type": "boolean",
+                                        "defaultValueBoolean": false,
+                                        "constraints": {
+                                            "nullable": false
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

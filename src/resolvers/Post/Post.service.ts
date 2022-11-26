@@ -25,6 +25,7 @@ export class PostService {
         const createdPost = await orm.post.create({
             data: {
                 email: input.email,
+                isFake: false,
                 text: input.text,
                 userId: context.userId,
             },
