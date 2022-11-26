@@ -8,4 +8,5 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: ['**/?*.test.ts'],
     verbose: false,
+    forceExit: true,
 }
