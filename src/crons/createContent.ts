@@ -23,31 +23,45 @@ const INPUTS = [
     'Tell me a funny story about your marriage.',
 ]
 
-export const createContentCron = schedule(env.OPEN_AI_CONTENT_CRON, () => {
-    const actions = [...new Array(4)].map(async () => {
-        const response = await openai.createCompletion({
+export const createContentCron = schedule(env.OPEN_AI_CONTENT_CRON, async () => {
+    const response = await openai
+        .createCompletion({
             frequency_penalty: 2,
             max_tokens: 300,
             model: 'text-davinci-002',
             prompt: getRandomArrayElement(INPUTS),
             temperature: 1,
         })
+        .catch((error: unknown) => {
+            logger.error({
+                category: LoggerCategoriesEnum.CRONS,
+                error,
+                message: 'Text fetch from open AI failed',
+            })
+        })
 
-        await orm.post.create({
+    if (!response) {
+        logger.error({
+            category: LoggerCategoriesEnum.CRONS,
+            message: 'No data from open AI fetch',
+        })
+
+        return
+    }
+
+    await orm
+        .post
+        .create({
             data: {
                 text: response.data.choices[0]?.text ?? '',
                 userId: 'f3542ef6-2d84-4c7b-9e6f-c74741834f8f',
             },
         })
-    })
-
-    void Promise
-        .all(actions)
         .catch((error: unknown) => {
             logger.error({
                 category: LoggerCategoriesEnum.CRONS,
                 error,
-                message: 'Create content CRON failed',
+                message: 'Open AI text database update failed',
             })
         })
 })

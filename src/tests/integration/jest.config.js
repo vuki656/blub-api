@@ -1,5 +1,6 @@
 /** @type { import('ts-jest/dist/types').InitialOptionsTsJest } */
 module.exports = {
+    forceExit: true,
     globalSetup: './setup.ts',
     globalTeardown: './teardown.ts',
     preset: 'ts-jest',
@@ -8,5 +9,4 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: ['**/?*.test.ts'],
     verbose: false,
-    forceExit: true,
 }
