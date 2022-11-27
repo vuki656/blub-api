@@ -50,12 +50,14 @@ export const ApolloPluginLogger: ApolloServerPlugin<ContextType> = {
                 }
             },
             async willSendResponse(responseContext) {
+                const { data, ...other } = responseContext.response
+
                 logger.info({
                     category: LoggerCategoriesEnum.GRAPHQL_RESPONSE,
                     context: {
                         requestId: requestContext.context.requestId,
                     },
-                    response: responseContext.response,
+                    response: other,
                 })
             },
         }
