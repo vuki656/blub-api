@@ -28,7 +28,7 @@ export const createContentCron = schedule(env.OPEN_AI_CONTENT_CRON, async () => 
         .createCompletion({
             frequency_penalty: 2,
             max_tokens: 300,
-            model: 'text-davinci-002',
+            model: 'text-davinci-003',
             prompt: getRandomArrayElement(INPUTS),
             temperature: 1,
         })
