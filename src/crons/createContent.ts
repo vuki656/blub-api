@@ -53,6 +53,7 @@ export const createContentCron = schedule(env.OPEN_AI_CONTENT_CRON, async () => 
         .post
         .create({
             data: {
+                isFake: true,
                 text: response.data.choices[0]?.text ?? '',
                 userId: 'f3542ef6-2d84-4c7b-9e6f-c74741834f8f',
             },
