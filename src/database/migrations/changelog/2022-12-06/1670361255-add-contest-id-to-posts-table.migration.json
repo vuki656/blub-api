@@ -1,0 +1,46 @@
+{
+    "databaseChangeLog": [
+        {
+            "logicalFilePath": "1670361255-add-contest-id-to-posts-table.migration.json",
+            "objectQuotingStrategy": "QUOTE_ALL_OBJECTS"
+        },
+        {
+            "changeSet": {
+                "id": "1670361255",
+                "author": "off.vukovic@gmail.com",
+                "comment": "Add contest id to posts table",
+                "changes": [
+                    {
+                        "dropColumn": {
+                            "tableName": "posts",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "email"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "addColumn": {
+                            "tableName": "posts",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "type": "VARCHAR(150)",
+                                        "name": "contest_id",
+                                        "constraints": {
+                                            "nullable": true,
+                                            "unique": true
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
