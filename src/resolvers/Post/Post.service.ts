@@ -24,7 +24,7 @@ export class PostService {
     public async createOne(input: CreatePostInput, context: ContextType): Promise<CreatePostPayload> {
         const createdPost = await orm.post.create({
             data: {
-                email: input.email,
+                contestId: input.contestId,
                 isFake: false,
                 text: input.text,
                 userId: context.userId,

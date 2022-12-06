@@ -200,7 +200,7 @@ describe('Post resolver', () => {
                 query: CREATE_POST,
                 variables: {
                     input: {
-                        email: faker.internet.email(),
+                        contestId: v4(),
                         text: TEXT,
                     },
                 },
